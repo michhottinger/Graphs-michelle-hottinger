@@ -1,5 +1,20 @@
-import random  as random
+import random
 
+
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+    
+    
 class User:
     def __init__(self, name):
         self.name = name
@@ -50,6 +65,8 @@ class SocialGraph:
             self.add_user(f"User{i}")
 
         # Create friendships
+        possible_friendships = []
+        
         for user_id in self.users:
             for friend_id in range(user_id + 1, self.last_id + 1):
                 possible_friendships.append((user_id, friend_id))
@@ -59,7 +76,7 @@ class SocialGraph:
         random.shuffle(possible_friendships)#fix import for this
         
         #add friendships
-        for i in range(num_user * ave_friendships // 2):#divide to deal with reciprical friendships
+        for i in range(num_users * avg_friendships // 2):#divide to deal with reciprical friendships
             friendship = possible_friendships[i]
             self.add_friendship(friendship[0], friendship[1])
 
@@ -72,15 +89,25 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-        visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
-        #find every user in extended network
-        #find shortest path to each user in extended network
-        #traverse one conn component, then do a bfs to find the shortest path to it
-        #how can we produce a dict with key: conn and value: path form start to key
-        
+        q = Queue()
+        q.enqueue([user_id])
+        visited = {}
+
+        while q.size() > 0:
+            path = q.dequeue()
+            v = path[-1]
+
+            if v not in visited:
+                # print(v)
+                if v is not user_id:
+                    visited[v] = path
+
+                for n in self.friendships[v]:
+                    q.enqueue(path + [n])
+
         return visited
 
+       
 
 if __name__ == '__main__':
     sg = SocialGraph()
