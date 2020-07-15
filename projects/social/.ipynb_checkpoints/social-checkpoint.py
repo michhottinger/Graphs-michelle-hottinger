@@ -1,5 +1,3 @@
-import random  as random
-
 class User:
     def __init__(self, name):
         self.name = name
@@ -44,24 +42,11 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        
+        # !!!! IMPLEMENT ME
+
         # Add users
-        for i in range(num_users):
-            self.add_user(f"User{i}")
 
         # Create friendships
-        for user_id in self.users:
-            for friend_id in range(user_id + 1, self.last_id + 1):
-                possible_friendships.append((user_id, friend_id))
-                
-        
-        #shuffle the friendships
-        random.shuffle(possible_friendships)#fix import for this
-        
-        #add friendships
-        for i in range(num_user * ave_friendships // 2):#divide to deal with reciprical friendships
-            friendship = possible_friendships[i]
-            self.add_friendship(friendship[0], friendship[1])
 
     def get_all_social_paths(self, user_id):
         """
@@ -74,11 +59,6 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
-        #find every user in extended network
-        #find shortest path to each user in extended network
-        #traverse one conn component, then do a bfs to find the shortest path to it
-        #how can we produce a dict with key: conn and value: path form start to key
-        
         return visited
 
 

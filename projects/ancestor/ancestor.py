@@ -17,5 +17,6 @@ def earliest_ancestor(ancestors, starting_node):
             best_node = node
             best_depth = depth            
     return best_node
-
+#this was done with help!!! I did not do this myself.
+#might try another way as well
     
