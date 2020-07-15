@@ -98,11 +98,12 @@ class SocialGraph:
             v = path[-1]
 
             if v not in visited:
-                # print(v)
+                # print(v): these are the primary friends
                 if v is not user_id:
                     visited[v] = path
 
                 for n in self.friendships[v]:
+                    #print (n): these are friends of friends
                     q.enqueue(path + [n])
 
         return visited
