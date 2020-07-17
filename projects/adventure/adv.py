@@ -104,6 +104,7 @@ def dft_traversal(current_room):
             add_to_visited(current_room, curr_exits)#this adds the room id and exits to visited list
         if direction is not None:
             visited[current_room][opp_dir(direction)] = prev_room#set up the previous node
+        
         if prev_room is not None:
             visited[prev_room][direction] = current_room#set up the current node
             

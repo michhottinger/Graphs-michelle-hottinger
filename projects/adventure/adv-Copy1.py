@@ -2,7 +2,7 @@ from room import Room
 from player import Player
 from world import World
 from collections import deque
-from queue import queue
+import threading, queue
 
 import random
 from ast import literal_eval
@@ -40,15 +40,7 @@ class Stack():
     def size(self):
         return len(self.stack)
 
-def return_adjacent(direction):
-    if direction == "n":
-        return "e"
-    if direction == "s":
-        return "w"
-    if direction == "e":
-        return "s"
-    if direction == "w":
-        return "n"
+
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
@@ -66,38 +58,54 @@ def return_adjacent(direction):
 
     
 traversal_path = []
-steps = 0
+
 visited = {}
-def traversal(current_room):
-    q = queue()
-   
-    visited.add(room.id)
-    visits = 1
-    q.put(0, room, traversal_path, steps, visited, visits())
+
+def move(direction):
+    player.travel(direction)
+    traversal_path.append(direction)
+
+def recurse(direction):
+    traversal(direction)
+    move(direction)
     
-    while not q.empty():
-        room, traversal_path, steps, visited, visits() = q.get()
-        if len(visited) == room_count:
-            return path
-        for direction in room.get_exits():
-            next_room = room.get_room_in_direction(direction)
-            
-            next_path = next_path.append(direction)
-            
-            next_steps = steps + 1
-            
-            next_visited = visited
-            next_visits = visits
-            
-            if next_room.id not in next_visited:
-                next_visited.add(next_room.id)
-                next_visits = visits + 1
-                
-            q.put(next_room, next_path, next_steps, next_visited, next_visits())
+def traversal(previous=0):
+    
+    current_room = player.current_room.id
+   
+    for key in visited:
+        if key == current_room:
+            #print("been here:", current_room)
+            return
+    visited[current_room] = {}
+    #print('adding:', current_room)
+    
+    exits = player.current_room.get_exits()
+    for dir in exits:
+        if dir == 'n' and previous is not dir:
+            move('n')
+            recurse('s')
+        elif dir == 's' and previous is not dir:
+            move('s')
+            recurse('n')
+        elif dir == 'e' and previous is not dir:
+            move('e')
+            recurse('w')
+        elif dir == 'w' and previous is not dir:
+            move('w')
+            recurse('e')
+#     move = player.current_room.connect_rooms(direction, connecting_room)
+#     for path in move:
+#         if move == 'n' and previous is not move:
+#             player.travel('n')
+#             traversal_path.append('n')
+#             traversal('s')
+#             player.travel('s')
+#             traversal_path.append('s')
+traversal()
+                                 
 
-    return traversal_path
-
-
+    
 # TRAVERSAL TEST
 visited_rooms = set()
 player.current_room = world.starting_room
