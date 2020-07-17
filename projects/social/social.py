@@ -71,6 +71,7 @@ class SocialGraph:
             for friend_id in range(user_id + 1, self.last_id + 1):
                 possible_friendships.append((user_id, friend_id))
                 
+                
         
         #shuffle the friendships
         random.shuffle(possible_friendships)#fix import for this
